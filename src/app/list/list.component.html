@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="text-center">
+    <h1>Shopping list</h1>
+    <button class="btn btn-info" (click)="logout()">Logout</button>
+  </div>
+  <ul class="list-group">
+    <li *ngFor="let item of items" class="list-group-item">
+      {{ item.name }}
+      <button class="btn btn-danger btn-sm" (click)="delete(item.id)">
+        delete
+      </button>
+    </li>
+  </ul>
+  <form class="form-group mt-3">
+    <input
+      #itemQuantity
+      class="form-control mb-2"
+      type="number"
+      placeholder="Qtd"
+    />
+    <input #itemName class="form-control" type="text" placeholder="Name" />
+    <button
+      class="btn btn-primary mt-2"
+      (click)="add(itemName.value, itemQuantity.value)"
+    >
+      Add
+    </button>
+  </form>
+  {{ error?.mesage }}
+</div>

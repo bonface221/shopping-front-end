@@ -1,0 +1,12 @@
+<div class="container">
+    <h1 class="text-center">Sign-Up</h1>
+    <form class="form-group">
+        <input class="form-control" #username type="text" placeholder="Username">
+        <input class="form-control" #email type="email" placeholder="email">
+        <input class="form-control"  #password1 type="password" placeholder="password1">
+        <input class="form-control" #password2 type="password" placeholder="password2">
+        <button class="btn btn-primary" (click)="signup(username.value,email.value,password1.value,password2.value)">Signup</button>
+        <p class="ml-3">You have an account?? <a routerLink="/login">Login</a></p>
+    </form>
+    <p>{{ error?.message }}</p>
+</div>
