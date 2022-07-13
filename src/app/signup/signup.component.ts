@@ -5,20 +5,23 @@ import { AuthService } from '../auth.service';
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent implements OnInit {
   error: any;
-  constructor(private authService:AuthService,private router:Router) { }
+  constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit(): void {
-  }
-  signup(username: string, email: string, password1: string, password2: string) {
+  ngOnInit(): void {}
+  signup(
+    username: string,
+    email: string,
+    password1: string,
+    password2: string
+  ) {
     // call signup
     this.authService.signup(username, email, password1, password2).subscribe({
-      next: success => this.router.navigate(['list']),
-      error: err =>this.error = err
-    })
+      next: (success) => this.router.navigate(['login']),
+      error: (err) => (this.error = err),
+    });
   }
-
 }

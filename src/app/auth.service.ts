@@ -25,12 +25,11 @@ export class AuthService {
     const payload = jwtDecode<JWTPayload>(token);
     // console.log(payload)
     const expiresAt = moment.unix(payload.exp);
-    
 
     localStorage.setItem('token', token);
     localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
   }
-  
+
   get token(): string {
     return localStorage.getItem('token')!;
   }
@@ -57,15 +56,21 @@ export class AuthService {
     password2: string
   ) {
     // implement signup
-    return this.http.post<Tokens>(
-      this.apiRoot.concat('signup/'),
-      {username,email,password1,password2}
-    ).pipe(
-      tap(response => {
-        this.setSession(response.access_token)
-        localStorage.setItem('tokenRefresh',response.refresh_token)
-      }),shareReplay()
-    )
+    return this.http
+      .post<Tokens>(this.apiRoot.concat('signup/'), {
+        username,
+        email,
+        password1,
+        password2,
+      })
+      .pipe(
+        tap((response) => {
+          console.log(response);
+          // this.setSession(response.access_token)
+          // localStorage.setItem('tokenRefresh',response.refresh_token)
+        }),
+        shareReplay()
+      );
   }
   logout() {
     localStorage.removeItem('token');
@@ -87,7 +92,7 @@ export class AuthService {
           tap((response) => {
             this.setSession(response.access);
           }),
-          shareReplay() 
+          shareReplay()
         )
         .subscribe();
     }
@@ -122,7 +127,8 @@ export class AuthInterceptor implements HttpInterceptor {
     console.log(token);
 
     if (token) {
-      const cloned = req.clone({ //Authorization : Bearer kkkdjijfidjsdksjskjfkdj
+      const cloned = req.clone({
+        //Authorization : Bearer kkkdjijfidjsdksjskjfkdj
         headers: req.headers.set('Authorization', 'Bearer '.concat(token)),
       });
       return next.handle(cloned);
@@ -157,12 +163,12 @@ interface Tokens {
   access_token: string;
   refresh_token: string;
   user: {
-    pk: number,
-    username: string,
-    email: string,
-    first_name: string | null,
-    last_name:string|null
-  }
+    pk: number;
+    username: string;
+    email: string;
+    first_name: string | null;
+    last_name: string | null;
+  };
 }
 interface Refresh {
   access: string;
